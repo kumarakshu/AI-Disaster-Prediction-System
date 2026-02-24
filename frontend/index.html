@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Flood Prediction Dashboard</title>
+</head>
+
+<body>
+
+<h1>Flood Prediction Dashboard</h1>
+
+<button onclick="predictFlood()">Predict Flood Risk</button>
+
+<h2 id="result">Waiting for prediction...</h2>
+
+<script>
+
+async function predictFlood() {
+
+    console.log("Button clicked");
+
+    document.getElementById("result").innerText = "Loading...";
+
+    const data = {
+        MonsoonIntensity: 8,
+        TopographyDrainage: 7,
+        RiverManagement: 6,
+        Deforestation: 5,
+        Urbanization: 6,
+        ClimateChange: 7,
+        DamsQuality: 6,
+        Siltation: 5,
+        AgriculturalPractices: 6,
+        Encroachments: 5,
+        IneffectiveDisasterPreparedness: 6,
+        DrainageSystems: 7,
+        CoastalVulnerability: 4,
+        Landslides: 6,
+        Watersheds: 5,
+        DeterioratingInfrastructure: 6,
+        PopulationScore: 7,
+        WetlandLoss: 5,
+        InadequatePlanning: 6,
+        PoliticalFactors: 5
+    };
+
+    try {
+
+        const response = await fetch("http://127.0.0.1:8000/predict", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(data)
+        });
+
+        const result = await response.json();
+
+        console.log(result);
+
+        document.getElementById("result").innerText =
+            "Flood Risk: " + result.FloodRisk +
+            " | Probability: " + result.Probability;
+
+    }
+    catch(error) {
+
+        console.log(error);
+
+        document.getElementById("result").innerText =
+            "Error connecting backend";
+
+    }
+
+}
+
+</script>
+
+</body>
+
+</html>
